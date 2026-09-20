@@ -1,8 +1,6 @@
 ---
 name: idea-to-deck
 description: Turn a raw concept into a researched, storylined, self-contained HTML presentation through explicit approval gates. Use for "idea to deck", "research this and build a presentation", or similar requests starting from an idea. Not for redesigning an existing deck.
-metadata:
-  argument-hint: "[key concept]"
 ---
 
 # Idea to Deck
@@ -48,9 +46,9 @@ Default to **Quick**. Ask once, in one compact question, only for missing essent
 output language, audience, and what the audience should decide or do. If the user's language
 preference is clear, use it instead of asking.
 
-Use **Deep** only when the user requests it. Invoke `grilling` (or
-`mattpocock-skills:grilling`) to surface the same essentials plus useful context. Do not ask
-the Quick questions again after the interview. Persist the result in `state.md` and set
+Use **Deep** only when the user requests it. Interview the user to surface the same essentials
+plus constraints, risks, prior attempts, and what would change their decision. Do not ask the
+Quick questions again after the interview. Persist the result in `state.md` and set
 `Approved through: intake`.
 
 Write research synthesis in the chosen output language. Preserve quotations in their original
@@ -112,8 +110,8 @@ Counterpoint, Takeaway, or Sources. Write `storyline.md` as a Markdown table:
 Headlines must assert something; reading them in order should reveal the whole argument. Use
 only source IDs from `research.md`.
 
-Then stop. Show the storyline and ask for approval. Mention that the user may request
-`grilling` to stress-test it. Do not build the deck. When approval arrives, set
+Then stop. Show the storyline and ask for approval. Mention that the user may request a
+stress-test interview. Do not build the deck. When approval arrives, set
 `Approved through: storyline` before Phase 3.
 
 ## Phase 3 — Deck
@@ -141,8 +139,8 @@ requests Phase 4.
 
 ## Phase 4 — Beautify (optional)
 
-Run only when the user asks after `deck.html` exists. When available, use
-`ui-ux-pro-max:slides` for design guidance, then edit `deck.html` in place.
+Run only when the user asks after `deck.html` exists. Use any available presentation-design
+guidance, then edit `deck.html` in place; the skill must still work when none is installed.
 
 Improve spacing, hierarchy, type scale, color, and visual distinction between slide types.
 Do not add claims, slides, or reorder the argument. Keep the Phase 3 offline and accessibility

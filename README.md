@@ -1,10 +1,10 @@
 # Idea to Deck
 
-A Codex skill that turns a raw concept into a researched, storylined, self-contained HTML presentation through explicit approval gates.
+An [Agent Skills](https://agentskills.io) skill for Codex and Claude Code that turns a raw concept into a researched, storylined, self-contained HTML presentation through explicit approval gates.
 
-## Install
+## Codex
 
-Ask Codex:
+Ask Codex to install it:
 
 ```text
 Use $skill-installer to install:
@@ -19,4 +19,23 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --path skills/idea-to-deck
 ```
 
-The skill is available on the next Codex turn.
+Invoke it with `$idea-to-deck`. If it does not appear immediately, restart Codex.
+
+For a project-only installation, copy `skills/idea-to-deck` to `.agents/skills/idea-to-deck`
+inside that project.
+
+## Claude Code
+
+Install it as a personal skill:
+
+```bash
+git clone --depth 1 https://github.com/chanooooot/idea-to-deck-skill.git /tmp/idea-to-deck-skill
+mkdir -p ~/.claude/skills
+cp -R /tmp/idea-to-deck-skill/skills/idea-to-deck ~/.claude/skills/
+```
+
+Invoke it with `/idea-to-deck`. For a project-only installation, copy the same folder to
+`.claude/skills/idea-to-deck` inside that project.
+
+The shared skill uses only the standard `name` and `description` frontmatter fields and does
+not require platform-specific tools or companion skills.

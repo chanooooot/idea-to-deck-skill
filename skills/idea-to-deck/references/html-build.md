@@ -30,9 +30,10 @@ or nested slides. Install it in a scratch directory, then inline the UMD build a
 
 ## Charts
 
-Prefer a large number or a small HTML table when it communicates the claim. For a chart, use
-`data:data-visualization` when available to choose the form. Add Chart.js only when native
-HTML/CSS is insufficient, and inline its UMD build without its source-map comment.
+Prefer a large number or a small HTML table when it communicates the claim. Use any available
+data-visualization guidance to choose the form, but do not require an extra skill. Add Chart.js
+only when native HTML/CSS is insufficient, and inline its UMD build without its source-map
+comment.
 
 - Pass resolved colors to canvas code; canvas cannot resolve CSS variables.
 - Rebuild charts when the color scheme changes.
