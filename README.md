@@ -1,6 +1,9 @@
 # Idea to Deck
 
-An [Agent Skills](https://agentskills.io) skill for Codex and Claude Code that turns a raw concept into a researched, storylined, self-contained HTML presentation through explicit approval gates.
+An [Agent Skills](https://agentskills.io) skill for Codex and Claude Code that turns a raw concept into a researched, storylined, visually directed, self-contained HTML presentation through explicit approval gates.
+
+The workflow approves research first, then the storyline and a three-slide visual direction
+preview, before building and visually checking the complete deck.
 
 ## Codex
 

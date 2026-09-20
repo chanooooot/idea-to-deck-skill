@@ -3,162 +3,514 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DECK DESCRIPTION">
 <title>DECK TITLE</title>
 <style>
   :root {
-    --bg: #ffffff;
-    --fg: #16181d;
-    --muted: #5b6270;
-    --accent: #2f5bd7;
-    --rule: #e2e5ea;
-    --slide-pad: clamp(2rem, 6vw, 6rem);
+    color-scheme: dark;
+    --bg: #090b10;
+    --surface: #121620;
+    --surface-strong: #1a2030;
+    --fg: #f7f8fb;
+    --muted: #a5adbd;
+    --accent: #ff5c45;
+    --accent-2: #66e3c4;
+    --line: rgba(255,255,255,.13);
+    --shadow: 0 28px 90px rgba(0,0,0,.42);
+    --radius: 1.25rem;
+    --pad: clamp(2.25rem, 5vw, 5.5rem);
+    --ease: cubic-bezier(.2,.8,.2,1);
+    --duration: 420ms;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #14161a;
-      --fg: #eceef2;
-      --muted: #a2a9b8;
-      --accent: #7fa3ff;
-      --rule: #2b2f37;
-    }
-  }
+
   * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; }
+  html, body { margin: 0; width: 100%; height: 100%; }
   body {
-    background: var(--bg);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #05060a;
     color: var(--fg);
-    /* Thai-capable system stack, no webfont (must work offline from disk) */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai",
                  "Leelawadee UI", "Thonburi", Tahoma, sans-serif;
-    line-height: 1.55;
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-    height: 100%;
+    line-height: 1.5;
   }
   html[lang="th"] body { line-height: 1.75; }
+
+  .deck {
+    position: relative;
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 28%),
+      linear-gradient(145deg, var(--surface), var(--bg) 58%);
+    box-shadow: var(--shadow);
+  }
+  .deck::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    opacity: .18;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    mask-image: linear-gradient(to bottom right, #000, transparent 72%);
+  }
+  .deck::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 38%;
+    aspect-ratio: 1;
+    right: -17%;
+    bottom: -42%;
+    border: 1px solid color-mix(in srgb, var(--accent-2) 55%, transparent);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 3rem color-mix(in srgb, var(--accent-2) 5%, transparent),
+      0 0 0 7rem color-mix(in srgb, var(--accent-2) 3%, transparent);
+  }
+
   .slide {
-    scroll-snap-align: start;
-    min-height: 100vh;
-    padding: var(--slide-pad);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1.5rem;
-    border-bottom: 1px solid var(--rule);
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    gap: clamp(.9rem, 2vw, 1.6rem);
+    padding: var(--pad);
+    visibility: hidden;
+    opacity: 0;
+    transform: translate3d(2.5rem, 0, 0) scale(.985);
+    pointer-events: none;
+    transition:
+      opacity var(--duration) var(--ease),
+      transform var(--duration) var(--ease),
+      visibility 0s linear var(--duration);
   }
-  .kicker {
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    font-size: .8rem;
-    color: var(--accent);
+  .slide.active {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .slide > * {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 360ms var(--ease),
+      transform 360ms var(--ease);
+  }
+  .slide.active > * { opacity: 1; transform: none; }
+  .slide.active > :nth-child(2) { transition-delay: 70ms; }
+  .slide.active > :nth-child(3) { transition-delay: 130ms; }
+  .slide.active > :nth-child(4) { transition-delay: 190ms; }
+
+  .eyebrow {
     margin: 0;
+    color: var(--accent-2);
+    font-size: clamp(.68rem, 1.1vw, .9rem);
+    font-weight: 750;
+    letter-spacing: .14em;
+    text-transform: uppercase;
   }
-  h1 { font-size: clamp(2rem, 6vw, 4.5rem); line-height: 1.3; margin: 0; }
-  h2 { font-size: clamp(1.5rem, 4vw, 3rem); line-height: 1.35; margin: 0; max-width: 24ch; }
-  .lead { font-size: clamp(1.05rem, 2vw, 1.5rem); color: var(--muted); margin: 0; max-width: 60ch; }
-  ul { margin: 0; padding-left: 1.2em; max-width: 60ch; }
-  li { margin-bottom: .75rem; }
-  .stat { font-size: clamp(3rem, 12vw, 8rem); font-weight: 700; line-height: 1.1; color: var(--accent); }
-  .cite { font-size: .8rem; color: var(--muted); }
-  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 2rem; }
-  .sources { font-size: .95rem; }
-  .sources li { overflow-wrap: anywhere; }
-  a { color: var(--accent); }
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: .25rem; }
+  h1, h2, h3, p { margin: 0; }
+  h1, h2, .statement, .metric {
+    font-family: "Arial Black", "Segoe UI", "Noto Sans Thai", sans-serif;
+    letter-spacing: -.045em;
+  }
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(2.6rem, 6.8vw, 6.4rem);
+    line-height: .98;
+  }
+  h2 {
+    max-width: 20ch;
+    font-size: clamp(2rem, 4.1vw, 4.1rem);
+    line-height: 1.04;
+  }
+  h3 { font-size: clamp(1rem, 1.7vw, 1.35rem); }
+  .lead {
+    max-width: 54ch;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.8vw, 1.45rem);
+  }
+  .accent { color: var(--accent); }
+  .meta, .cite {
+    color: var(--muted);
+    font-size: clamp(.68rem, 1.1vw, .86rem);
+  }
+  .rule {
+    width: min(9rem, 18vw);
+    height: .36rem;
+    border: 0;
+    margin: .1rem 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .layout-title { align-content: end; padding-bottom: clamp(4rem, 10vh, 8rem); }
+  .layout-title .lead { max-width: 42ch; }
+  .layout-title::before {
+    content: "";
+    position: absolute;
+    width: clamp(12rem, 29vw, 27rem);
+    aspect-ratio: 1;
+    top: -11%;
+    right: 4%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 34% 30%, var(--accent-2), transparent 15%),
+      radial-gradient(circle at 50% 50%, var(--accent), transparent 61%);
+    filter: blur(.2px);
+    opacity: .88;
+    mix-blend-mode: screen;
+  }
+
+  .layout-message { place-content: center; }
+  .statement {
+    max-width: 18ch;
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    line-height: 1.02;
+  }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(15rem, .95fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+  }
+  .metric {
+    color: var(--accent);
+    font-size: clamp(5rem, 13vw, 12rem);
+    line-height: .78;
+  }
+  .metric-copy { display: grid; gap: 1rem; }
+  .metric-copy p:not(.cite) {
+    max-width: 30ch;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1rem, 3vw, 2.25rem);
+  }
+  .panel {
+    min-height: clamp(10rem, 26vh, 16rem);
+    padding: clamp(1.2rem, 2.5vw, 2.2rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    display: grid;
+    align-content: start;
+    gap: .8rem;
+  }
+  .panel.highlight {
+    border-color: color-mix(in srgb, var(--accent-2) 55%, var(--line));
+    background: linear-gradient(145deg,
+      color-mix(in srgb, var(--accent-2) 15%, var(--surface)),
+      var(--surface));
+  }
+  .panel p { color: var(--muted); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(.8rem, 2.5vw, 2rem);
+    counter-reset: step;
+  }
+  .step {
+    counter-increment: step;
+    position: relative;
+    min-height: clamp(9rem, 24vh, 15rem);
+    padding: clamp(1.1rem, 2.3vw, 2rem);
+    border-top: .3rem solid var(--accent);
+    background: linear-gradient(180deg, var(--surface-strong), color-mix(in srgb, var(--surface) 70%, transparent));
+  }
+  .step::before {
+    content: "0" counter(step);
+    display: block;
+    margin-bottom: 1.4rem;
+    color: var(--accent-2);
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+  .step p { margin-top: .5rem; color: var(--muted); }
+
+  .quote {
+    max-width: 23ch;
+    font-size: clamp(2rem, 4.5vw, 4.5rem);
+    font-weight: 760;
+    line-height: 1.08;
+    letter-spacing: -.035em;
+  }
+  .quote::before { content: "“"; color: var(--accent); }
+  .quote::after { content: "”"; color: var(--accent); }
+
+  .decision {
+    padding-left: clamp(1.4rem, 3vw, 2.6rem);
+    border-left: .45rem solid var(--accent);
+  }
+  .decision ul {
+    display: grid;
+    gap: .65rem;
+    margin: 1rem 0 0;
+    padding-left: 1.2em;
+    color: var(--muted);
+  }
+
+  .sources {
+    max-height: 54vh;
+    margin: .2rem 0 0;
+    padding: 0 0 0 1.4rem;
+    overflow: auto;
+    display: grid;
+    gap: .6rem;
+    color: var(--muted);
+    font-size: clamp(.68rem, 1.05vw, .84rem);
+  }
+  .sources li { padding-left: .35rem; overflow-wrap: anywhere; }
+  a { color: var(--accent-2); text-underline-offset: .18em; }
+  :focus-visible { outline: 3px solid var(--accent-2); outline-offset: .25rem; }
+
+  .chrome {
+    position: fixed;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    font-size: .78rem;
+  }
+  .progress {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: .24rem;
+    background: rgba(255,255,255,.08);
+  }
+  .progress > span {
+    display: block;
+    width: 12.5%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width var(--duration) var(--ease);
+  }
+  .controls {
+    right: clamp(.8rem, 2vw, 1.5rem);
+    bottom: clamp(.7rem, 1.6vw, 1.25rem);
+    gap: .45rem;
+    padding: .35rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(14px);
+  }
+  .controls button {
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    font: inherit;
+  }
+  .controls button:hover { background: var(--surface-strong); }
+  .counter { min-width: 3.2rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 700px), (max-height: 520px) {
+    :root { --pad: clamp(1.5rem, 4vw, 2.4rem); }
+    .metric-grid { grid-template-columns: .85fr 1.15fr; gap: 1.4rem; }
+    .panel { min-height: 8.5rem; }
+    .controls button { width: 1.7rem; height: 1.7rem; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    * { scroll-behavior: auto !important; }
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+      animation: none !important;
+      transition-duration: .01ms !important;
+    }
   }
 
   @media print {
-    body { scroll-snap-type: none; overflow: visible; height: auto; }
-    .slide { min-height: auto; height: 100vh; page-break-after: always; border-bottom: 0; }
+    @page { size: 13.333in 7.5in; margin: 0; }
+    body { display: block; overflow: visible; background: #fff; }
+    .deck { width: 13.333in; height: auto; overflow: visible; box-shadow: none; }
+    .slide {
+      position: relative;
+      width: 13.333in;
+      height: 7.5in;
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      page-break-after: always;
+      pointer-events: auto;
+    }
+    .slide > * { opacity: 1; transform: none; }
+    .chrome { display: none; }
   }
 </style>
 </head>
 <body>
+<main class="deck" id="deck" aria-label="DECK TITLE">
 
-<!-- Title -->
-<section class="slide" id="slide-1" aria-labelledby="slide-1-title">
-  <p class="kicker">KICKER</p>
-  <h1 id="slide-1-title">DECK TITLE</h1>
-  <p class="lead">One-line promise: what the audience walks away with.</p>
-</section>
+  <section class="slide layout-title" id="slide-1" aria-labelledby="slide-1-title">
+    <p class="eyebrow">Presentation · YYYY</p>
+    <h1 id="slide-1-title">A clear promise belongs here.</h1>
+    <hr class="rule">
+    <p class="lead">One sentence that tells the audience why this presentation deserves their attention.</p>
+  </section>
 
-<!-- Message: the core answer, stated up front, alone -->
-<section class="slide" id="slide-2" aria-labelledby="slide-2-title">
-  <h2 id="slide-2-title">The core message as a full assertive sentence.</h2>
-</section>
+  <section class="slide layout-message" id="slide-2" aria-labelledby="slide-2-title">
+    <p class="eyebrow">The answer</p>
+    <h2 class="statement" id="slide-2-title">State the recommendation before explaining it.</h2>
+  </section>
 
-<!-- Context -->
-<section class="slide" id="slide-3" aria-labelledby="slide-3-title">
-  <p class="kicker">Context</p>
-  <h2 id="slide-3-title">Headline that asserts something.</h2>
-  <ul>
-    <li>Supporting point.</li>
-    <li>Supporting point.</li>
-  </ul>
-</section>
+  <section class="slide layout-metric" id="slide-3" aria-labelledby="slide-3-title">
+    <p class="eyebrow">Evidence</p>
+    <div class="metric-grid">
+      <p class="metric" aria-label="42 percent">42%</p>
+      <div class="metric-copy">
+        <h2 id="slide-3-title">The number proves one specific point.</h2>
+        <p>Explain the implication, not the arithmetic.</p>
+        <p class="cite">[S1] Publisher, YYYY-MM-DD</p>
+      </div>
+    </div>
+  </section>
 
-<!-- Evidence -->
-<section class="slide" id="slide-4" aria-labelledby="slide-4-title">
-  <p class="kicker">Evidence</p>
-  <h2 id="slide-4-title">Headline stating what the number proves.</h2>
-  <p class="stat">42%</p>
-  <p class="cite">Source [S1], published YYYY-MM-DD</p>
-</section>
+  <section class="slide layout-comparison" id="slide-4" aria-labelledby="slide-4-title">
+    <p class="eyebrow">Comparison</p>
+    <h2 id="slide-4-title">Make the difference visible at a glance.</h2>
+    <div class="comparison">
+      <article class="panel">
+        <h3>Today</h3>
+        <p>Describe the current constraint in one concise sentence.</p>
+      </article>
+      <article class="panel highlight">
+        <h3>Next</h3>
+        <p>Describe the better state and why it matters.</p>
+      </article>
+    </div>
+    <p class="cite">[S2] Publisher, YYYY-MM-DD</p>
+  </section>
 
-<!-- Comparison -->
-<section class="slide" id="slide-5" aria-labelledby="slide-5-title">
-  <p class="kicker">Comparison</p>
-  <h2 id="slide-5-title">Headline stating the difference that matters.</h2>
-  <div class="cols">
-    <div><h3>Before</h3><ul><li>Point.</li></ul></div>
-    <div><h3>After</h3><ul><li>Point.</li></ul></div>
-  </div>
-  <p class="cite">Source [S2]</p>
-</section>
+  <section class="slide layout-process" id="slide-5" aria-labelledby="slide-5-title">
+    <p class="eyebrow">Process</p>
+    <h2 id="slide-5-title">Three steps move the decision forward.</h2>
+    <div class="steps">
+      <article class="step"><h3>Start focused</h3><p>Choose the smallest useful scope.</p></article>
+      <article class="step"><h3>Measure honestly</h3><p>Use evidence tied to the decision.</p></article>
+      <article class="step"><h3>Scale deliberately</h3><p>Expand only after the result is clear.</p></article>
+    </div>
+  </section>
 
-<!-- Counterpoint -->
-<section class="slide" id="slide-6" aria-labelledby="slide-6-title">
-  <p class="kicker">Counterpoint</p>
-  <h2 id="slide-6-title">The strongest honest objection, stated plainly.</h2>
-  <p class="lead">And the response to it.</p>
-  <p class="cite">Source [S3]</p>
-</section>
+  <section class="slide layout-quote" id="slide-6" aria-labelledby="slide-6-title">
+    <p class="eyebrow">Counterpoint</p>
+    <h2 class="quote" id="slide-6-title">The strongest objection deserves a direct answer.</h2>
+    <p class="lead">Respond with evidence and boundaries—not dismissal.</p>
+    <p class="cite">[S3] Publisher, YYYY-MM-DD</p>
+  </section>
 
-<!-- Takeaway -->
-<section class="slide" id="slide-7" aria-labelledby="slide-7-title">
-  <p class="kicker">Takeaway</p>
-  <h2 id="slide-7-title">What to do or decide next, concretely.</h2>
-  <ul>
-    <li>Action.</li>
-  </ul>
-</section>
+  <section class="slide layout-decision" id="slide-7" aria-labelledby="slide-7-title">
+    <p class="eyebrow">Decision</p>
+    <div class="decision">
+      <h2 id="slide-7-title">End with a concrete choice.</h2>
+      <ul>
+        <li>What should happen next</li>
+        <li>Who owns the action</li>
+        <li>When the first result is reviewed</li>
+      </ul>
+    </div>
+  </section>
 
-<!-- Sources: every link used -->
-<section class="slide" id="slide-8" aria-labelledby="slide-8-title">
-  <h2 id="slide-8-title">Sources</h2>
-  <ol class="sources">
-    <li>[S1] Title — Publisher, YYYY-MM-DD — <a href="https://example.com">https://example.com</a></li>
-  </ol>
-</section>
+  <section class="slide layout-sources" id="slide-8" aria-labelledby="slide-8-title">
+    <p class="eyebrow">References</p>
+    <h2 id="slide-8-title">Sources</h2>
+    <ol class="sources">
+      <li>[S1] Title — Publisher, YYYY-MM-DD — <a href="https://example.com">https://example.com</a></li>
+      <li>[S2] Title — Publisher, YYYY-MM-DD — <a href="https://example.com">https://example.com</a></li>
+      <li>[S3] Title — Publisher, YYYY-MM-DD — <a href="https://example.com">https://example.com</a></li>
+    </ol>
+  </section>
+
+  <div class="chrome progress" aria-hidden="true"><span id="progress"></span></div>
+  <nav class="chrome controls" aria-label="Slide controls">
+    <button id="prev" type="button" aria-label="Previous slide">←</button>
+    <span class="counter" id="counter" aria-live="polite">1 / 8</span>
+    <button id="next" type="button" aria-label="Next slide">→</button>
+    <button id="fullscreen" type="button" aria-label="Toggle fullscreen">⛶</button>
+  </nav>
+</main>
 
 <script>
   const slides = [...document.querySelectorAll('.slide')];
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  addEventListener('keydown', e => {
-    const dir = { ArrowRight: 1, ArrowDown: 1, PageDown: 1, ' ': 1,
-                  ArrowLeft: -1, ArrowUp: -1, PageUp: -1 }[e.key];
-    if (!dir) return;
-    e.preventDefault();
-    const mid = innerHeight / 2;
-    const cur = slides.findIndex(s => s.getBoundingClientRect().bottom > mid);
-    const next = slides[Math.min(Math.max(cur + dir, 0), slides.length - 1)];
-    next?.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-    if (next) history.replaceState(null, '', `#${next.id}`);
-  });
-</script>
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const deck = document.getElementById('deck');
+  let touchStartX = 0;
 
+  const hashIndex = () => {
+    const match = location.hash.match(/^#slide-(\d+)$/);
+    return match ? Number(match[1]) - 1 : 0;
+  };
+
+  let current = Math.min(Math.max(hashIndex(), 0), slides.length - 1);
+
+  function showSlide(index, updateHash = true) {
+    current = Math.min(Math.max(index, 0), slides.length - 1);
+    slides.forEach((slide, i) => {
+      const active = i === current;
+      slide.classList.toggle('active', active);
+      slide.setAttribute('aria-hidden', String(!active));
+      slide.toggleAttribute('inert', !active);
+    });
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+    if (updateHash) history.replaceState(null, '', `#slide-${current + 1}`);
+  }
+
+  const next = () => showSlide(current + 1);
+  const previous = () => showSlide(current - 1);
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', previous);
+  document.getElementById('fullscreen').addEventListener('click', () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else deck.requestFullscreen?.();
+  });
+
+  addEventListener('keydown', event => {
+    if (event.target.closest('a, button, input, textarea, select')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) {
+      event.preventDefault();
+      next();
+    }
+    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+      event.preventDefault();
+      previous();
+    }
+    if (event.key === 'Home') { event.preventDefault(); showSlide(0); }
+    if (event.key === 'End') { event.preventDefault(); showSlide(slides.length - 1); }
+    if (event.key.toLowerCase() === 'f') document.getElementById('fullscreen').click();
+  });
+
+  addEventListener('hashchange', () => showSlide(hashIndex(), false));
+  deck.addEventListener('touchstart', event => {
+    touchStartX = event.changedTouches[0].clientX;
+  }, { passive: true });
+  deck.addEventListener('touchend', event => {
+    const delta = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) < 48) return;
+    delta < 0 ? next() : previous();
+  }, { passive: true });
+
+  showSlide(current, false);
+</script>
 </body>
 </html>

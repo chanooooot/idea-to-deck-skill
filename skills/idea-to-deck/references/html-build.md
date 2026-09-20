@@ -5,9 +5,15 @@ Read this reference only for Phase 3 or Phase 4.
 ## Default build
 
 Copy `deck-template.html` to the run's `deck.html`, replace its examples with the approved
-storyline, set the document language and title, and delete unused example slides. Preserve
-stable slide IDs (`slide-1`, `slide-2`, ...) so a specific slide can be opened as
-`deck.html#slide-5` during verification.
+storyline, and delete unused example slides. Reuse the approved design tokens and signature
+motif from `direction.html`; do not quietly invent a second visual direction. Set the document
+language and title. Preserve stable slide IDs (`slide-1`, `slide-2`, ...) so a specific slide
+can be opened as `deck.html#slide-5` during verification.
+
+Choose a layout for the slide's communication job rather than repeating one composition:
+Title Hero, Message, Big Number, Split Comparison, Process, Quote or Counterpoint, Decision,
+and Sources. Use one dominant visual idea per slide. Create rhythm by alternating quiet and
+dense slides and using one high-contrast pattern break near each third of the deck.
 
 Use system fonts. Inline all CSS, JavaScript, images, and chart code. Ordinary source links may
 remain clickable, but loading the deck itself must issue no network requests.
@@ -51,13 +57,15 @@ The deck is not done until it has been rendered and inspected.
 2. Screenshot at a wide size such as 1400×900 and a compact size such as 800×600. Use an
    available browser tool, or locate Chromium/Chrome and allow a `CHROME_BIN` override rather
    than assuming one installation path.
-3. Inspect light and dark modes. Respect `prefers-reduced-motion` rather than forcing motion.
+3. Inspect the approved theme. If the deck intentionally supports both light and dark themes,
+   inspect both. Respect `prefers-reduced-motion` rather than forcing motion.
 4. Open at least one dense slide and every chart directly via its hash, for example
    `file:///absolute/path/deck.html#slide-5`; do not inspect only the title slide.
 5. View each screenshot with the available image-viewing tool. Fix clipping, overflow,
    unreadable type, weak contrast, missing glyphs, misleading chart geometry, and broken focus
    states, then re-shoot.
-6. Confirm keyboard navigation works and meaningful images/charts have text alternatives.
+6. Confirm keyboard, button, and touch navigation work; fullscreen exits cleanly; meaningful
+   images and charts have text alternatives.
 
 When using reveal.js, use its hash route (for example `#/4`) instead of modifying the HTML to
 inject a jump script.

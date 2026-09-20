@@ -1,6 +1,6 @@
 ---
 name: idea-to-deck
-description: Turn a raw concept into a researched, storylined, self-contained HTML presentation through explicit approval gates. Use for "idea to deck", "research this and build a presentation", or similar requests starting from an idea. Not for redesigning an existing deck.
+description: Turn a raw concept into a researched, storylined, visually directed, self-contained HTML presentation through explicit approval gates. Use for "idea to deck", "research this and build a presentation", or similar requests starting from an idea. Not for redesigning an existing deck.
 ---
 
 # Idea to Deck
@@ -17,7 +17,8 @@ Write each run to `decks/<slug>/`, where `<slug>` is a short kebab-case concept 
 |---|---|
 | `state.md` | Brief and explicit approval state |
 | `research.md` | Phase 1 findings and source registry |
-| `storyline.md` | Phase 2 approved argument and slide plan |
+| `storyline.md` | Phase 2 argument and slide plan |
+| `direction.html` | Phase 2 three-slide visual direction preview |
 | `deck.html` | Phase 3 deck, edited in place by Phase 4 |
 
 Create `state.md` before research:
@@ -30,6 +31,9 @@ Create `state.md` before research:
 - Language: th | en
 - Audience: ...
 - Intended decision or action: ...
+- Presentation duration: ...
+- Brand assets: none | paths or links
+- Visual preference: choose for me | mood words
 - Approved through: intake | research | storyline | deck
 - Last updated: YYYY-MM-DD
 ```
@@ -43,8 +47,9 @@ requested by the user may edit that phase's file.
 ## Intake
 
 Default to **Quick**. Ask once, in one compact question, only for missing essentials: concept,
-output language, audience, and what the audience should decide or do. If the user's language
-preference is clear, use it instead of asking.
+output language, audience, intended decision or action, presentation duration, available brand
+assets, and visual mood. If language or duration is obvious, infer it. If the user has no
+visual preference, choose a direction from the audience and purpose.
 
 Use **Deep** only when the user requests it. Interview the user to surface the same essentials
 plus constraints, risks, prior attempts, and what would change their decision. Do not ask the
@@ -85,7 +90,7 @@ Then stop. Summarize the core claims, strongest counterpoint, and open questions
 to approve the research and proceed. Do not draft the storyline. When approval arrives, set
 `Approved through: research` before Phase 2.
 
-## Phase 2 — Storyline
+## Phase 2 — Storyline and visual direction
 
 Goal: decide the argument before designing slides.
 
@@ -110,17 +115,26 @@ Counterpoint, Takeaway, or Sources. Write `storyline.md` as a Markdown table:
 Headlines must assert something; reading them in order should reveal the whole argument. Use
 only source IDs from `research.md`.
 
-Then stop. Show the storyline and ask for approval. Mention that the user may request a
-stress-test interview. Do not build the deck. When approval arrives, set
-`Approved through: storyline` before Phase 3.
+After the storyline is complete, read [references/art-direction.md](references/art-direction.md).
+Choose one visual direction from the audience, purpose, content, brand inputs, and desired
+emotion arc. Create `direction.html` with three representative slides using real approved
+copy: Title, Evidence or Big Number, and Comparison or Process. The preview is a reusable
+design seed, not a miniature second deck.
+
+Show the storyline, name and rationale of the direction, palette, typography, signature motif,
+motion approach, and the `direction.html` path. Ask for approval of both story and visual
+direction. Mention that the user may request a stress-test interview or targeted visual change.
+Do not build the deck. When both are approved, set `Approved through: storyline`; this state
+means the storyline and direction are approved together.
 
 ## Phase 3 — Deck
 
 Goal: render the approved storyline as `deck.html`.
 
 Before building, read [references/html-build.md](references/html-build.md). Use
-`references/deck-template.html` by default. Use reveal.js only when the deck actually needs
-fragments, speaker view, nested slides, or another reveal-specific feature.
+`references/deck-template.html` by default and reuse the approved tokens, motif, components,
+and motion from `direction.html`. Use reveal.js only when the deck actually needs fragments,
+speaker view, nested slides, or another reveal-specific feature.
 
 - Add no new claims. If a needed fact is absent from Phase 1, stop and research it through the
   Phase 1 gate.
@@ -137,13 +151,14 @@ Verify the rendered deck as specified in `references/html-build.md`, then report
 ask for acceptance. Set `Approved through: deck` only after the user accepts it or explicitly
 requests Phase 4.
 
-## Phase 4 — Beautify (optional)
+## Phase 4 — Refine (optional)
 
 Run only when the user asks after `deck.html` exists. Use any available presentation-design
 guidance, then edit `deck.html` in place; the skill must still work when none is installed.
 
-Improve spacing, hierarchy, type scale, color, and visual distinction between slide types.
-Do not add claims, slides, or reorder the argument. Keep the Phase 3 offline and accessibility
+Apply the requested adjustment—such as more premium, less motion, stronger contrast, lower
+text density, or more editorial charts—without drifting from the approved direction. Do not
+add claims, slides, or reorder the argument. Keep the Phase 3 offline and accessibility
 constraints. Re-run the same verification, then report the changes in one or two lines.
 
 ## Thai copy
