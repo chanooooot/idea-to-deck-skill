@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="LANG_CODE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DECK TITLE</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #16181d;
+    --muted: #5b6270;
+    --accent: #2f5bd7;
+    --rule: #e2e5ea;
+    --slide-pad: clamp(2rem, 6vw, 6rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161a;
+      --fg: #eceef2;
+      --muted: #a2a9b8;
+      --accent: #7fa3ff;
+      --rule: #2b2f37;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    /* Thai-capable system stack, no webfont (must work offline from disk) */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai",
+                 "Leelawadee UI", "Thonburi", Tahoma, sans-serif;
+    line-height: 1.55;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100%;
+  }
+  html[lang="th"] body { line-height: 1.75; }
+  .slide {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    padding: var(--slide-pad);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .8rem;
+    color: var(--accent);
+    margin: 0;
+  }
+  h1 { font-size: clamp(2rem, 6vw, 4.5rem); line-height: 1.3; margin: 0; }
+  h2 { font-size: clamp(1.5rem, 4vw, 3rem); line-height: 1.35; margin: 0; max-width: 24ch; }
+  .lead { font-size: clamp(1.05rem, 2vw, 1.5rem); color: var(--muted); margin: 0; max-width: 60ch; }
+  ul { margin: 0; padding-left: 1.2em; max-width: 60ch; }
+  li { margin-bottom: .75rem; }
+  .stat { font-size: clamp(3rem, 12vw, 8rem); font-weight: 700; line-height: 1.1; color: var(--accent); }
+  .cite { font-size: .8rem; color: var(--muted); }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 2rem; }
+  .sources { font-size: .95rem; }
+  .sources li { overflow-wrap: anywhere; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: .25rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; }
+  }
+
+  @media print {
+    body { scroll-snap-type: none; overflow: visible; height: auto; }
+    .slide { min-height: auto; height: 100vh; page-break-after: always; border-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Title -->
+<section class="slide" id="slide-1" aria-labelledby="slide-1-title">
+  <p class="kicker">KICKER</p>
+  <h1 id="slide-1-title">DECK TITLE</h1>
+  <p class="lead">One-line promise: what the audience walks away with.</p>
+</section>
+
+<!-- Message: the core answer, stated up front, alone -->
+<section class="slide" id="slide-2" aria-labelledby="slide-2-title">
+  <h2 id="slide-2-title">The core message as a full assertive sentence.</h2>
+</section>
+
+<!-- Context -->
+<section class="slide" id="slide-3" aria-labelledby="slide-3-title">
+  <p class="kicker">Context</p>
+  <h2 id="slide-3-title">Headline that asserts something.</h2>
+  <ul>
+    <li>Supporting point.</li>
+    <li>Supporting point.</li>
+  </ul>
+</section>
+
+<!-- Evidence -->
+<section class="slide" id="slide-4" aria-labelledby="slide-4-title">
+  <p class="kicker">Evidence</p>
+  <h2 id="slide-4-title">Headline stating what the number proves.</h2>
+  <p class="stat">42%</p>
+  <p class="cite">Source [S1], published YYYY-MM-DD</p>
+</section>
+
+<!-- Comparison -->
+<section class="slide" id="slide-5" aria-labelledby="slide-5-title">
+  <p class="kicker">Comparison</p>
+  <h2 id="slide-5-title">Headline stating the difference that matters.</h2>
+  <div class="cols">
+    <div><h3>Before</h3><ul><li>Point.</li></ul></div>
+    <div><h3>After</h3><ul><li>Point.</li></ul></div>
+  </div>
+  <p class="cite">Source [S2]</p>
+</section>
+
+<!-- Counterpoint -->
+<section class="slide" id="slide-6" aria-labelledby="slide-6-title">
+  <p class="kicker">Counterpoint</p>
+  <h2 id="slide-6-title">The strongest honest objection, stated plainly.</h2>
+  <p class="lead">And the response to it.</p>
+  <p class="cite">Source [S3]</p>
+</section>
+
+<!-- Takeaway -->
+<section class="slide" id="slide-7" aria-labelledby="slide-7-title">
+  <p class="kicker">Takeaway</p>
+  <h2 id="slide-7-title">What to do or decide next, concretely.</h2>
+  <ul>
+    <li>Action.</li>
+  </ul>
+</section>
+
+<!-- Sources: every link used -->
+<section class="slide" id="slide-8" aria-labelledby="slide-8-title">
+  <h2 id="slide-8-title">Sources</h2>
+  <ol class="sources">
+    <li>[S1] Title — Publisher, YYYY-MM-DD — <a href="https://example.com">https://example.com</a></li>
+  </ol>
+</section>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  addEventListener('keydown', e => {
+    const dir = { ArrowRight: 1, ArrowDown: 1, PageDown: 1, ' ': 1,
+                  ArrowLeft: -1, ArrowUp: -1, PageUp: -1 }[e.key];
+    if (!dir) return;
+    e.preventDefault();
+    const mid = innerHeight / 2;
+    const cur = slides.findIndex(s => s.getBoundingClientRect().bottom > mid);
+    const next = slides[Math.min(Math.max(cur + dir, 0), slides.length - 1)];
+    next?.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+    if (next) history.replaceState(null, '', `#${next.id}`);
+  });
+</script>
+
+</body>
+</html>
